@@ -57,6 +57,22 @@ contract PmknFarm {
 		emit Unstake(msg.sender, amount)
 	}
 
+	function withdrawYield() public {
+		uint256 toTransfer = calculateYieldTotal(msg.sender);
+
+		require(toTransfer > 0 || pmknBalance[msg.sender] > 0, "Nothing to withdraw");
+
+		if (pmknBalance[msg.sender] != 0) {
+			uint256 oldBalance = pmknBalance[msg.sender];
+			pmknBalance[msg.sender] = 0;
+			toTransfer += oldBalance;
+		}
+
+		startTime[msg.sender] = block.timestamp;
+		pmknToken.mint(msg.sender, toTransfer);
+		emit YieldWithdraw(msg.sender, toTransfer);
+	}
+
 }
 
 
