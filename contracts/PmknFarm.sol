@@ -39,6 +39,24 @@ contract PmknFarm {
 		emit Stake(msg.sender, amnount);
 	}
 
+	function unstake(uint256 amount) public {
+		require(isStaking[msg.sender] == true && stakingBalance[msg.sender] >= amount,  "Nothing to unstake");
+
+		uint256 yieldTransfer = calculateYieldTotal(msg.sender);
+		startTime[msg.sender] = block.timestamp;
+		uint256 balanceTransfer = amount;
+		amount = 0;
+		stakingBalance[msg.sender] -= balanceTransfer;
+		daiToken.transfer(msg.sender, balanceTransfer);
+		pmknBalance[msg.sender] += yieldTransfer;
+
+		if (stakingBalance[msg.sender] == 0) {
+			isStaking[msg.sender] = false;
+		}
+
+		emit Unstake(msg.sender, amount)
+	}
+
 }
 
 
