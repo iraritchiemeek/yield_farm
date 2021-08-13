@@ -73,6 +73,20 @@ contract PmknFarm {
 		emit YieldWithdraw(msg.sender, toTransfer);
 	}
 
+	function calculateYieldTime(address user) public view returns(uint256) {
+		uint256 end = block.timestamp;
+		uint256 totalTime = end - startTime[user];
+		return totalTime;
+	}
+
+	function calculateYieldTotal(address user) public view returns(uint256) {
+		uint256 time = calculateYieldTime(user) * 10**18;
+		uint256 rate = 86400;
+		uint256 timeRate = time / rate;
+		uint256 rawYield = (stakingBalance[user] * timeRate) / 10**18;
+		return rawYield;
+	}
+
 }
 
 
