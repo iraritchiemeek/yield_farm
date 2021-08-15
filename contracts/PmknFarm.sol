@@ -36,7 +36,7 @@ contract PmknFarm {
 		stakingBalance[msg.sender] += amount;
 		startTime[msg.sender] = block.timestamp;
 		isStaking[msg.sender] = true;
-		emit Stake(msg.sender, amnount);
+		emit Stake(msg.sender, amount);
 	}
 
 	function unstake(uint256 amount) public {
@@ -54,7 +54,7 @@ contract PmknFarm {
 			isStaking[msg.sender] = false;
 		}
 
-		emit Unstake(msg.sender, amount)
+		emit Unstake(msg.sender, amount);
 	}
 
 	function withdrawYield() public {
